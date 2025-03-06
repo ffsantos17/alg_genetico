@@ -5,11 +5,11 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
 
-        int TAMANHO_POPULACAO = 100;
+        int TAMANHO_POPULACAO = 1000;
         double TAXA_MUTACAO = 0.11;
         int NUMERO_GERACOES = 1000;
         int TAMANHO_EQUIPE = 5;
-        Set<String> habilidadesNecessarias = new HashSet<>(Arrays.asList("Java", "Python", "SQL Server", "Dart", "JavaScript", "HTML", "Flutter", "TypeScript", "React"));
+        Set<String> habilidadesNecessarias = new HashSet<>(Arrays.asList("Java", "Python", "SQL Server", "Dart", "JavaScript", "HTML", "Flutter", "TypeScript"));
 
         List<Candidato> todosCandidatos = Arrays.asList(
                 new Candidato("Candidato1", new HashSet<>(Arrays.asList("Java", "Spring Boot"))),
@@ -61,9 +61,7 @@ public class Main {
                 new Candidato("Candidato47", new HashSet<>(Arrays.asList("JavaScript", "Svelte"))),
                 new Candidato("Candidato48", new HashSet<>(Arrays.asList("Go", "Docker"))),
                 new Candidato("Candidato49", new HashSet<>(Arrays.asList("C#", ".NET Core"))),
-                new Candidato("Candidato50", new HashSet<>(Arrays.asList("Python", "Pandas"))),
-                new Candidato("Candidato51", new HashSet<>(Arrays.asList("TypeScript", "Python"))),
-                new Candidato("Candidato52", new HashSet<>(Arrays.asList("TypeScript", "C#")))
+                new Candidato("Candidato50", new HashSet<>(Arrays.asList("Python", "Pandas")))
         );
 
 
@@ -72,11 +70,13 @@ public class Main {
 
         Equipe melhorEquipe = gen.encontrarMelhorEquipe(NUMERO_GERACOES, populacao);
 
+
+        System.out.println("Habilidade Nescessarias: "+ habilidadesNecessarias);
         System.out.println("Melhor equipe encontrada:");
         for (Candidato candidato : melhorEquipe.candidatos) {
             System.out.println(candidato.nome + " - " + candidato.habilidades);
         }
-        System.out.println("Fitness: " + melhorEquipe.fitness);
+        System.out.println("Fitness: " + melhorEquipe.fitness*100+"%");
     }
 }
 
