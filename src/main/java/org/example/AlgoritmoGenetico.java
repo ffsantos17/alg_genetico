@@ -3,11 +3,11 @@ package org.example;
 import java.util.*;
 
 public class AlgoritmoGenetico {
-    private int TAMANHO_POPULACAO;
-    private double TAXA_MUTACAO;
-    private int TAMANHO_EQUIPE;
-    private List<Candidato> todosCandidatos;
-    Set<String> habilidadesNecessarias;
+    private final int TAMANHO_POPULACAO;
+    private final double TAXA_MUTACAO;
+    private final int TAMANHO_EQUIPE;
+    private final List<Candidato> todosCandidatos;
+    final Set<String> habilidadesNecessarias;
 
     public AlgoritmoGenetico(int TAMANHO_POPULACAO, double TAXA_MUTACAO, int TAMANHO_EQUIPE, List<Candidato> todosCandidatos, Set<String> habilidadesNecessarias) {
         this.TAMANHO_POPULACAO = TAMANHO_POPULACAO;
@@ -74,6 +74,33 @@ public class AlgoritmoGenetico {
                 equipe.candidatos.set(i, novoCandidato);
             }
         }
+    }
+
+    public Equipe encontrarMelhorEquipe(int NUMERO_GERACOES, List<Equipe> populacao){
+
+        for (int geracao = 0; geracao < NUMERO_GERACOES; geracao++) {
+            List<Equipe> novaPopulacao = new ArrayList<>();
+
+            List<Equipe> selecionados = selecionar(populacao);
+            novaPopulacao.addAll(selecionados);
+
+            while (novaPopulacao.size() < TAMANHO_POPULACAO) {
+                Equipe pai1 = selecionados.get(new Random().nextInt(selecionados.size()));
+                Equipe pai2 = selecionados.get(new Random().nextInt(selecionados.size()));
+                Equipe filho = crossover(pai1, pai2);
+                mutar(filho);
+                novaPopulacao.add(filho);
+            }
+
+            populacao = novaPopulacao;
+            populacao.sort((e1, e2) -> Double.compare(e2.fitness, e1.fitness));
+            System.out.println(geracao);
+            if(populacao.get(0).fitness == 1){
+                break;
+            }
+        }
+
+        return populacao.get(0);
     }
 
 

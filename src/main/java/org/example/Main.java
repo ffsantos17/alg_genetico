@@ -5,11 +5,11 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
 
-        int TAMANHO_POPULACAO = 1000;
+        int TAMANHO_POPULACAO = 100;
         double TAXA_MUTACAO = 0.11;
-        int NUMERO_GERACOES = 100;
+        int NUMERO_GERACOES = 1000;
         int TAMANHO_EQUIPE = 5;
-        Set<String> habilidadesNecessarias = new HashSet<>(Arrays.asList("Java", "PHP", "Python", "SQL Server", "Dart", "JavaScript", "HTML", "React", "Flutter"));
+        Set<String> habilidadesNecessarias = new HashSet<>(Arrays.asList("Java", "Python", "SQL Server", "Dart", "JavaScript", "HTML", "Flutter", "TypeScript", "React"));
 
         List<Candidato> todosCandidatos = Arrays.asList(
                 new Candidato("Candidato1", new HashSet<>(Arrays.asList("Java", "Spring Boot"))),
@@ -61,32 +61,16 @@ public class Main {
                 new Candidato("Candidato47", new HashSet<>(Arrays.asList("JavaScript", "Svelte"))),
                 new Candidato("Candidato48", new HashSet<>(Arrays.asList("Go", "Docker"))),
                 new Candidato("Candidato49", new HashSet<>(Arrays.asList("C#", ".NET Core"))),
-                new Candidato("Candidato50", new HashSet<>(Arrays.asList("Python", "Pandas")))
+                new Candidato("Candidato50", new HashSet<>(Arrays.asList("Python", "Pandas"))),
+                new Candidato("Candidato51", new HashSet<>(Arrays.asList("TypeScript", "Python"))),
+                new Candidato("Candidato52", new HashSet<>(Arrays.asList("TypeScript", "C#")))
         );
 
 
         AlgoritmoGenetico gen = new AlgoritmoGenetico(TAMANHO_POPULACAO, TAXA_MUTACAO, TAMANHO_EQUIPE, todosCandidatos, habilidadesNecessarias);
         List<Equipe> populacao = gen.inicializarPopulacao(todosCandidatos);
 
-        for (int geracao = 0; geracao < NUMERO_GERACOES; geracao++) {
-            List<Equipe> novaPopulacao = new ArrayList<>();
-
-            List<Equipe> selecionados = gen.selecionar(populacao);
-            novaPopulacao.addAll(selecionados);
-
-            while (novaPopulacao.size() < TAMANHO_POPULACAO) {
-                Equipe pai1 = selecionados.get(new Random().nextInt(selecionados.size()));
-                Equipe pai2 = selecionados.get(new Random().nextInt(selecionados.size()));
-                Equipe filho = gen.crossover(pai1, pai2);
-                gen.mutar(filho);
-                novaPopulacao.add(filho);
-            }
-
-            populacao = novaPopulacao;
-        }
-
-        populacao.sort((e1, e2) -> Double.compare(e2.fitness, e1.fitness));
-        Equipe melhorEquipe = populacao.get(0);
+        Equipe melhorEquipe = gen.encontrarMelhorEquipe(NUMERO_GERACOES, populacao);
 
         System.out.println("Melhor equipe encontrada:");
         for (Candidato candidato : melhorEquipe.candidatos) {
