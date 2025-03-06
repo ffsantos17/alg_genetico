@@ -94,7 +94,6 @@ public class AlgoritmoGenetico {
 
             populacao = novaPopulacao;
             populacao.sort((e1, e2) -> Double.compare(e2.fitness, e1.fitness));
-            System.out.println(geracao);
             if(populacao.get(0).fitness == 1){
                 break;
             }
